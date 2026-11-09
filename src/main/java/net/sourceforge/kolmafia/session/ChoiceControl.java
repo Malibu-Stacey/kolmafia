@@ -119,6 +119,7 @@ public abstract class ChoiceControl {
 
   private static final Pattern TELEGRAM_PATTERN = Pattern.compile("value=\"RE: (.*?)\"");
   private static final Pattern PERIDOT_PATTERN = Pattern.compile("bandersnatch=(\\d+)");
+  private static final Pattern CLUB_EM_PATTERN = Pattern.compile("victim=(\\d+)");
 
   public static final void preChoice(final GenericRequest request) {
     switch (ChoiceManager.lastChoice) {
@@ -9588,7 +9589,19 @@ public abstract class ChoiceControl {
   }
 
   public static String choiceDescription(final int choice, final int decision) {
+    return choiceDescription(choice, decision, null);
+  }
+
+  public static String choiceDescription(
+      final int choice, final int decision, final String urlString) {
+    // First, try to find the label using the extras in URL
+    String formLabel = ChoiceUtilities.findChoiceLabelFromURL(urlString, decision);
+    if (formLabel != null) {
+      return formLabel;
+    }
+
     // If we have spoilers for this choice, use that
+    // This doesn't cover decorated labels, such as the peridot, unfortunately
     Spoilers spoilers = ChoiceAdventures.choiceSpoilers(choice, null);
     if (spoilers != null) {
       ChoiceOption spoiler =
@@ -9849,11 +9862,22 @@ public abstract class ChoiceControl {
             return true;
           }
         }
+
+        case 1589 -> { // Clubbed 'Em Into...
+          Matcher matcher = CLUB_EM_PATTERN.matcher(urlString);
+          if (matcher.find()) {
+            var monsterId = StringUtilities.parseInt(matcher.group(1));
+            var monsterName = MonsterDatabase.getMonsterName(monsterId);
+            RequestLogger.updateSessionLog(
+                "Took choice " + choice + "/" + decision + ": " + monsterName);
+            return true;
+          }
+        }
       }
 
       if (decision != 0) {
         // Figure out which decision we took
-        String desc = ChoiceManager.choiceDescription(choice, decision);
+        String desc = ChoiceManager.choiceDescription(choice, decision, urlString);
         RequestLogger.updateSessionLog("Took choice " + choice + "/" + decision + ": " + desc);
       }
     } else if (decision == 0) {

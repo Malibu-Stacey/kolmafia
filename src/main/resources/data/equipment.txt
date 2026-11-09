@@ -1445,6 +1445,7 @@ lawnmower blade	120	Mus: 45	2-handed sword
 lead pipe	100	Mus: 0	1-handed club
 lead yo-yo	80	Mox: 25	1-handed yoyo
 leechknife	125	Mus: 47	1-handed knife
+legendary acorndion	200	Mox: 0	2-handed accordion
 legendary pasta wand	100	Mus: 0	1-handed wand
 legendary seal-clubbing club	200	Mus: 0	1-handed club
 licorice whip	10	Mus: 0	1-handed whip
@@ -2502,7 +2503,7 @@ zoological sample kit	10	none
 [spelunking test kit]	0	none
 &quot;I survived Y2K&quot; T-Shirt	100	none
 &quot;I Voted!&quot; sticker	10	none
-401k gold ring	0	none
+401k gold ring	50	none
 acid-squirting flower	50	Mys: 10
 actual reality goggles	10	none
 actual skeleton key	10	none
